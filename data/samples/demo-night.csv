@@ -1,0 +1,4 @@
+﻿start_sec,end_sec,scientific_name,common_name,confidence
+0.000,3.000,Eudynamys scolopaceus,Asian Koel,0.4020
+3.000,6.000,Psittacula krameri,Rose-ringed Parakeet,0.2610
+6.000,9.000,Erithacus rubecula,European Robin,0.2255

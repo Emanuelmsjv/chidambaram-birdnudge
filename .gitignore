@@ -1,0 +1,31 @@
+node_modules/
+dist/
+.vite/
+
+# Model weights and label files are downloaded by scripts/download-model.mjs
+assets/
+
+*.onnx
+*.tflite
+*.pb
+
+# Raw field recordings are yours; add them deliberately if you want to share
+clips/*.wav
+clips/*.m4a
+clips/*.mp3
+clips/*.aac
+clips/*.ogg
+clips/*.opus
+clips/*.webm
+clips/*.flac
+
+# Regenerable outputs
+data/summary.json
+docs/overview.md
+docs/summary-sample.json
+docs/overview-sample.md
+
+.DS_Store
+Thumbs.db
+.env
+.env.local

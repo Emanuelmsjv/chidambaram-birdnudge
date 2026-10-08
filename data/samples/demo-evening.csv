@@ -1,0 +1,6 @@
+﻿start_sec,end_sec,scientific_name,common_name,confidence
+0.000,3.000,Corvus splendens,House Crow,0.4812
+3.000,6.000,Ardea purpurea,Purple Heron,0.3920
+6.000,9.000,Vanellus indicus,Red-wattled Lapwing,0.2110
+9.000,12.000,Turdus merula,Common Blackbird,0.1680
+12.000,15.000,Tringa totanus,Common Redshank,0.1520

@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "note": "Coarse, approximate coordinates for well-known public places around Chidambaram. Verify and refine before publishing; distances and walk times are deliberately not precomputed because they depend on where the user is sitting.",
+    "coordinatesAreApproximate": true,
+    "license": "CC0-1.0"
+  },
+  "spots": [
+    {
+      "id": "temple-tank",
+      "name": "Nataraja temple tank (Porthamarai Kulam)",
+      "type": "temple tank",
+      "lat": 11.6955,
+      "lng": 79.799,
+      "note": "Water tank inside the Chidambaram Natarajar temple complex. Immediate, free, no booking. Egrets, pond-herons, swamphen, cormorants on and around the water."
+    },
+    {
+      "id": "temple-prakaram",
+      "name": "Temple outer streets and avenue trees",
+      "type": "temple compound",
+      "lat": 11.6961,
+      "lng": 79.7996,
+      "note": "Mature trees around the temple enclosure. Parakeet flocks at dusk, koel after dark, shikra over the street."
+    },
+    {
+      "id": "pichavaram-jetty",
+      "name": "Pichavaram mangrove boat point",
+      "type": "mangrove lagoon",
+      "lat": 11.4521,
+      "lng": 79.7903,
+      "note": "Roughly 15 km from Chidambaram; needs a boat, so it is a weekend trip not a micro-break. Winter migrants arrive Oct-Mar with the northeast monsoon."
+    },
+    {
+      "id": "estuary-edges",
+      "name": "Vellar and Coleroon estuary edges",
+      "type": "estuary / canal edge",
+      "lat": 11.5085,
+      "lng": 79.7852,
+      "note": "Brackish channels bracketing the mangrove. Waders, kingfishers, darter. Best at low tide."
+    },
+    {
+      "id": "paddy-belt",
+      "name": "Paddy fields west of town",
+      "type": "paddy field",
+      "lat": 11.6898,
+      "lng": 79.7694,
+      "note": "Open cultivation on the drier side of town. Paddyfield pipit, openbill, weaver colonies, lapwing."
+    },
+    {
+      "id": "roadside-scrub",
+      "name": "Annamalai road verge",
+      "type": "open scrub / roadside",
+      "lat": 11.7085,
+      "lng": 79.8212,
+      "note": "Scrub and roadside trees. Bee-eater colonies, drongo, roller, paradise-flycatcher."
+    },
+    {
+      "id": "town-pond",
+      "name": "Any neighbourhood tank or reservoir",
+      "type": "pond or reservoir",
+      "lat": null,
+      "lng": null,
+      "note": "Placeholder. Point this at a real pond near you and it will match herons, storks, kingfishers, jacana and darters."
+    },
+    {
+      "id": "local-park",
+      "name": "Neighbourhood park or garden",
+      "type": "park / garden",
+      "lat": null,
+      "lng": null,
+      "note": "Placeholder for flower beds and hedges. Sunbirds, bulbuls, white-eyes."
+    }
+  ]
+}
