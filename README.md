@@ -191,13 +191,51 @@ same phone minutes earlier; the model returns **nothing** for the species there.
 speech, opposite answer, correctly matched to ground truth — the model is responding to
 the bird, not to the voice.
 
-One outdoor clip where the bird was confirmed gets no detection at all, which is reported
-rather than dropped. The report also documents a limitation of the species pack itself: it
-is built from iNaturalist, which under-reports ubiquitous small passerines, so "not in
-pack" is weaker evidence than it looks.
+One outdoor clip where the bird was confirmed gets no detection at all. That clip was also
+the quietest of the five, and I still cannot tell you whether the model failed or the
+microphone did. It is reported rather than dropped.
 
-The headline number is that the same model on the same code scores **55.6% in-pack** on
-local audio and **0%** on a foreign soundscape. The species list is doing the work.
+The same report documents a limitation of the species pack itself. It is built from
+iNaturalist, which is a photography platform: I pulled 1,000 research-grade observations
+from around Chidambaram and Indian White-eye appeared zero times, despite being one of the
+most common birds in India and constantly audible from my window. The pack over-represents
+birds people stop to photograph and under-represents small common passerines nobody bothers
+to upload. So "not in pack" means *not established as local by this data source*, not
+*absent*.
+
+### The number that started the project
+
+Same weights, same code, two recordings:
+
+| audio | in-pack fraction |
+| :--- | :---: |
+| upstream BirdNET sample, recorded in New York | **1 / 20** |
+| phone recordings from Chidambaram | **23 / 33** |
+
+Nineteen of the twenty species BirdNET proposed for the New York audio do not exist within
+30 km of Chidambaram — Dark-eyed Junco at 0.946, House Finch at 0.904, Black-capped
+Chickadee at 0.901, Blue Jay at 0.894. A Common Grackle, which is North American, came back
+at 0.415 on audio recorded on my own hostel campus.
+
+The single in-pack hit is House Sparrow at **0.051** — rank 20 of 20 by confidence, barely
+clearing the 0.05 threshold. Every confident prediction was a bird that does not live here.
+
+That gap is the whole project. A global classifier does not know where you are standing, and
+there is no "not in my region" button. This one is the button: same weights, then filter
+against a species list built from real observations near you. A hosted service gives you
+whatever species list its provider chose and no way to add yours.
+
+**The species list is doing the work, not the model.**
+
+## Submission
+
+This project was entered in the **Hacktoberfest Open-Source AI Challenge, Week 1: Touch
+Grass** (October 2026), built with [DevRelay](https://devrelay.com) as the agent gateway.
+The submission post is in **[docs/dev-post-week1.md](docs/dev-post-week1.md)**.
+
+DevRelay is optional and unrelated to the pipeline — it is the tool that captured the
+development session and published the write-up. The bird identification runs entirely without
+it.
 
 ## Not built yet
 
@@ -206,9 +244,31 @@ Stated plainly so nobody assumes otherwise:
 - No microphone capture, so audio still has to be recorded separately
 - No local fine-tuning; the model is used as-is
 - No PWA packaging and no hosted demo
+- Detection accuracy is unmeasured — four confirmed-positive clips, no held-out set
 - The species pack comes from iNaturalist alone and is biased toward birds people
   upload photographs of; it under-represents common small passerines
 - Seasonal notes are hand-curated for roughly the top 45 species in the pack
 - Place coordinates in `data/spots.json` are approximate and need verifying
 - Distances and travel times are not precomputed because they depend on where you
   are sitting
+
+## Bugs found in this project
+
+Kept here because the code is fixed but the failure modes are worth knowing about:
+
+- **`rank` was silently clobbered.** `fetch-pack.mjs` built entries as
+  `{ rank: i + 1, ...s }`. The spread lands after, so iNaturalist's own taxonomic rank
+  (`"species"`) overwrote the ordinal in all 130 entries. Ordering stayed correct, which is
+  why it went unnoticed. Fixed in `a087f8f`.
+- **A duplicate `dependencies` key in `package.json`.** The file declared `dependencies`
+  twice, pinning `onnxruntime-node` to both `1.26.0` and `^1.26.0`. Duplicate keys are legal
+  JSON but every parser takes the last one, so the exact pin was dead weight that looked
+  live. Fixed in `de84288`.
+- **`docs/overview.md` was gitignored** as a regenerable output, so the repository published
+  no findings at all — a clone gave you the pipeline and nothing it had produced. Fixed in
+  `a087f8f`.
+- **A truncated download masquerading as an executable.** `ffmpeg-static` twice produced a
+  66 MB `ffmpeg.exe` with a valid PE header and correct machine type that Windows still
+  rejected with *"not a valid application for this OS platform."* The file was cut off
+  mid-transfer. Never pipe an installer or binary to `iex` without checking its length
+  afterwards.
