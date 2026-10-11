@@ -248,7 +248,8 @@ whatever species list its provider chose and no way to add yours.
 
 This project was entered in the **Hacktoberfest Open-Source AI Challenge, Week 1: Touch
 Grass** (October 2026), built with [DevRelay](https://devrelay.com) as the agent gateway.
-The submission post is in **[docs/dev-post-week1.md](docs/dev-post-week1.md)**.
+The submission post is published on DEV.to rather than kept here, since this repository
+is for the code.
 
 DevRelay is optional and unrelated to the pipeline — it is the tool that captured the
 development session and published the write-up. The bird identification runs entirely without
