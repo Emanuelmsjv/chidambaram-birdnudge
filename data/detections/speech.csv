@@ -1,0 +1,13 @@
+start_sec,end_sec,scientific_name,common_name,confidence
+0.000,3.000,Corvus splendens,House Crow,0.068389
+3.000,6.000,Gallus gallus,Red Junglefowl,0.138617
+3.000,6.000,Copsychus saularis,Oriental Magpie-Robin,0.054857
+3.000,6.000,Aegithina tiphia,Common Iora,0.053960
+3.000,6.000,Eudynamys scolopaceus,Asian Koel,0.052982
+3.000,6.000,Orthotomus sutorius,Common Tailorbird,0.052402
+6.000,9.000,Copsychus saularis,Oriental Magpie-Robin,0.070833
+6.000,9.000,Acridotheres tristis,Common Myna,0.068012
+9.000,12.000,Passer domesticus,House Sparrow,0.071125
+12.000,15.000,Acridotheres tristis,Common Myna,0.241033
+12.000,15.000,Corvus splendens,House Crow,0.056850
+15.000,16.875,Acridotheres tristis,Common Myna,0.791664

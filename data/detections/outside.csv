@@ -1,0 +1,10 @@
+start_sec,end_sec,scientific_name,common_name,confidence
+0.000,3.000,Acridotheres tristis,Common Myna,0.731398
+3.000,6.000,Pycnonotus cafer,Red-vented Bulbul,0.138294
+6.000,9.000,Rallus aquaticus,Water Rail,0.065746
+6.000,9.000,Quiscalus mexicanus,Great-tailed Grackle,0.053564
+9.000,12.000,Pycnonotus cafer,Red-vented Bulbul,0.509207
+9.000,12.000,Halcyon smyrnensis,White-throated Kingfisher,0.458374
+9.000,12.000,Eudynamys scolopaceus,Asian Koel,0.064371
+12.000,15.000,Psittacula krameri,Rose-ringed Parakeet,0.873362
+15.000,17.451,Psittacula krameri,Rose-ringed Parakeet,0.866804

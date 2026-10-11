@@ -9,8 +9,10 @@
     "setup": "node scripts/download-model.mjs && npm run pack",
     "model": "node scripts/download-model.mjs",
     "pack": "node scripts/fetch-pack.mjs",
+    "convert": "node scripts/convert.mjs",
     "analyze": "node scripts/analyze.mjs",
     "summarize": "node scripts/summarize.mjs",
+    "case": "node scripts/case.mjs",
     "summarize:samples": "node scripts/summarize.mjs --dir data/samples",
     "nudge": "node scripts/nudge.mjs"
   },

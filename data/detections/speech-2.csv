@@ -1,0 +1,6 @@
+start_sec,end_sec,scientific_name,common_name,confidence
+0.000,3.000,Argya affinis,Yellow-billed Babbler,0.960661
+3.000,6.000,Argya affinis,Yellow-billed Babbler,0.933134
+6.000,9.000,Copsychus saularis,Oriental Magpie-Robin,0.713375
+9.000,12.000,Argya affinis,Yellow-billed Babbler,0.617101
+9.000,12.000,Copsychus saularis,Oriental Magpie-Robin,0.074931

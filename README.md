@@ -71,6 +71,15 @@ To see the pipeline work before recording anything:
 npm run summarize:samples
 ```
 
+Phone recordings arrive as `.m4a`. Convert them first — `convert` uses ffmpeg, which it
+will find on `PATH`, in `C:\tools`, or wherever `FFMPEG_PATH` points:
+
+```bash
+npm run convert          # clips/*.m4a -> 32 kHz mono WAV + clips/manifest.json
+npm run analyze clips --out data/detections
+npm run case             # regenerate docs/case-report.md
+```
+
 ## How it works
 
 The BirdNET+ ONNX graph takes **raw audio directly** — the spectrogram, mel
@@ -164,6 +173,22 @@ repository; download them with the script above.
 
 BirdNET is a developer preview (V3.0-preview3.1). Treat its outputs accordingly.
 
+## Results
+
+There is a worked end-to-end case study in **[docs/case-report.md](docs/case-report.md)**: a
+Yellow-billed Babbler (*Argya affinis*) observed at Golden Jubilee Hostel, Chidambaram, put
+through the full pipeline on real phone recordings, with the misses and the
+unreliable clips kept in rather than edited out.
+
+Two clips recorded at the same place score differently, and one outdoor clip where the
+observer confirmed the bird was present gets no detection at all. The report also
+documents a limitation of the species pack itself: it is built from iNaturalist, which
+under-reports ubiquitous small passerines, so "not in pack" is weaker evidence than it
+looks.
+
+The headline number is that the same model on the same code scores **55.6% in-pack** on
+local audio and **0%** on a foreign soundscape. The species list is doing the work.
+
 ## Not built yet
 
 Stated plainly so nobody assumes otherwise:
@@ -171,7 +196,8 @@ Stated plainly so nobody assumes otherwise:
 - No microphone capture, so audio still has to be recorded separately
 - No local fine-tuning; the model is used as-is
 - No PWA packaging and no hosted demo
-- WAV only. No m4a or ogg decoding without ffmpeg on PATH
+- The species pack comes from iNaturalist alone and is biased toward birds people
+  upload photographs of; it under-represents common small passerines
 - Seasonal notes are hand-curated for roughly the top 45 species in the pack
 - Place coordinates in `data/spots.json` are approximate and need verifying
 - Distances and travel times are not precomputed because they depend on where you

@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-10-11T07:37:34.203Z",
+  "sourceDir": "C:\\Users\\melwi\\Downloads\\Mobile Devices",
+  "targetRate": 32000,
+  "ffmpegVersion": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+  "duplicateFiles": [
+    {
+      "name": "Outside (2).m4a",
+      "reason": "byte-identical to Outside.m4a, excluded from analysis"
+    }
+  ],
+  "clips": [
+    {
+      "sourceFile": "Inside (2).m4a",
+      "sourceSha256": "65b4661a841b8f5ea4ff3f1132fb6514411003419303251709ca529cb75214fe",
+      "sourceBytes": 162333,
+      "wav": "clips/inside-2.wav",
+      "wavSha256": "fb7898435298fef828c6dec9235dd3af7f1b203f0fa68e31873d861ebe89456b",
+      "wavBytes": 634958,
+      "durationSec": 9.9,
+      "sourceCodec": "aac",
+      "sourceRate": 48000,
+      "sourceLevel": {
+        "meanDb": -34.1,
+        "peakDb": -9.8
+      },
+      "convertedLevel": {
+        "meanDb": -36.8,
+        "peakDb": -13.3
+      }
+    },
+    {
+      "sourceFile": "Inside.m4a",
+      "sourceSha256": "e6fd109f0bd34e00a01894d682e2a94db9b7c5abc2a97952e5a77b411396536f",
+      "sourceBytes": 293246,
+      "wav": "clips/inside.wav",
+      "wavSha256": "5e496d648151f681446b6edcead23d250cf8910d885ecc1145f7bb76f8b67426",
+      "wavBytes": 1142862,
+      "durationSec": 17.9,
+      "sourceCodec": "aac",
+      "sourceRate": 48000,
+      "sourceLevel": {
+        "meanDb": -38.1,
+        "peakDb": -5.8
+      },
+      "convertedLevel": {
+        "meanDb": -40.5,
+        "peakDb": -13.7
+      }
+    },
+    {
+      "sourceFile": "Outside.m4a",
+      "sourceSha256": "8a0572e4c316379e36dec2c624ec1f0ecc60bfcc6205d3ecbcd4c26d6aadf030",
+      "sourceBytes": 286753,
+      "wav": "clips/outside.wav",
+      "wavSha256": "c1d0ae63cadbc6c066c40049428e0ae9f642e59c4c4e14719318286f3a323724",
+      "wavBytes": 1116922,
+      "durationSec": 17.5,
+      "sourceCodec": "aac",
+      "sourceRate": 48000,
+      "sourceLevel": {
+        "meanDb": -40.2,
+        "peakDb": -13.8
+      },
+      "convertedLevel": {
+        "meanDb": -41.4,
+        "peakDb": -17.8
+      }
+    },
+    {
+      "sourceFile": "Speech (2).m4a",
+      "sourceSha256": "295ef379a994aa0d360603a1aa270375381dbede5c3e0e63552eab21ae766d40",
+      "sourceBytes": 353466,
+      "wav": "clips/speech-2.wav",
+      "wavSha256": "dc838d33ae2f2a4047f6691181eb4ee3b3b9f9d29e284f2ad54978d3e67aa358",
+      "wavBytes": 1380430,
+      "durationSec": 21.6,
+      "sourceCodec": "aac",
+      "sourceRate": 48000,
+      "sourceLevel": {
+        "meanDb": -33,
+        "peakDb": -0.1
+      },
+      "convertedLevel": {
+        "meanDb": -35.3,
+        "peakDb": -6.8
+      }
+    },
+    {
+      "sourceFile": "speech.m4a",
+      "sourceSha256": "728832731ee4567e0c996b91225a050381031569bc3ff7cba0e07ed9dce1b371",
+      "sourceBytes": 277481,
+      "wav": "clips/speech.wav",
+      "wavSha256": "3619fc199cfbe68c8ea565a2319b119f39ec4b43f4156ea92d6954bc090bd0f8",
+      "wavBytes": 1080058,
+      "durationSec": 16.9,
+      "sourceCodec": "aac",
+      "sourceRate": 48000,
+      "sourceLevel": {
+        "meanDb": -35.9,
+        "peakDb": -0.6
+      },
+      "convertedLevel": {
+        "meanDb": -37.9,
+        "peakDb": -7
+      }
+    }
+  ]
+}

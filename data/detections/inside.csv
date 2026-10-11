@@ -1,0 +1,16 @@
+start_sec,end_sec,scientific_name,common_name,confidence
+0.000,3.000,Argya affinis,Yellow-billed Babbler,0.079944
+3.000,6.000,Argya affinis,Yellow-billed Babbler,0.812134
+6.000,9.000,Copsychus saularis,Oriental Magpie-Robin,0.283039
+6.000,9.000,Argya affinis,Yellow-billed Babbler,0.056193
+6.000,9.000,Eudynamys scolopaceus,Asian Koel,0.050885
+9.000,12.000,Quiscalus quiscula,Common Grackle,0.414891
+9.000,12.000,Gallus gallus,Red Junglefowl,0.065695
+12.000,15.000,Psittacula eupatria,Alexandrine Parakeet,0.144397
+12.000,15.000,Dendrocitta vagabunda,Rufous Treepie,0.091607
+12.000,15.000,Psittacula krameri,Rose-ringed Parakeet,0.065215
+12.000,15.000,Eudynamys scolopaceus,Asian Koel,0.058003
+12.000,15.000,Ocyceros birostris,Indian Grey Hornbill,0.052931
+12.000,15.000,Acridotheres tristis,Common Myna,0.051759
+15.000,17.856,Copsychus saularis,Oriental Magpie-Robin,0.162495
+15.000,17.856,Oenanthe fusca,Brown Rock Chat,0.153027
