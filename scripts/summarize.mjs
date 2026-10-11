@@ -182,7 +182,7 @@ function readDetections(file) {
   return rows;
 }
 
-function topPredictions(rows, n) {
+function rankDistinct(rows) {
   const best = new Map();
   for (const row of rows) {
     const key = binomial(row.scientific);
@@ -193,7 +193,11 @@ function topPredictions(rows, n) {
       prev.hits += 1;
     }
   }
-  return [...best.values()].sort((a, b) => b.confidence - a.confidence).slice(0, n);
+  return [...best.values()].sort((a, b) => b.confidence - a.confidence);
+}
+
+function topPredictions(rows, n) {
+  return rankDistinct(rows).slice(0, n);
 }
 
 function pct(x) {
@@ -228,14 +232,41 @@ function main() {
   const perClip = [];
   const speciesTotals = new Map();
   const foreignTotals = new Map();
+  const allSpeciesTotals = new Map();
   let totalTop = 0;
   let totalInPack = 0;
   let totalRows = 0;
+  let totalAllDistinct = 0;
+  let totalAllInPack = 0;
 
   for (const file of files) {
     const rows = readDetections(resolve(DETECTIONS_DIR, file));
     totalRows += rows.length;
     const top = topPredictions(rows, TOP_N);
+    const allRanked = rankDistinct(rows);
+
+    let allInPack = 0;
+    for (const t of allRanked) {
+      const hit = lookup(pack, t.scientific);
+      const key = t.key;
+      const prev = allSpeciesTotals.get(key) ?? {
+        key,
+        scientific: t.scientific,
+        common: hit ? hit.common : t.common,
+        local: Boolean(hit),
+        clips: 0,
+        bestConfidence: 0,
+        segmentHits: t.hits,
+      };
+      prev.clips += 1;
+      prev.bestConfidence = Math.max(prev.bestConfidence, t.confidence);
+      prev.segmentHits += t.hits;
+      allSpeciesTotals.set(key, prev);
+      if (hit) allInPack += 1;
+    }
+
+    totalAllDistinct += allRanked.length;
+    totalAllInPack += allInPack;
 
     let inPack = 0;
     const topKeys = new Set();
@@ -324,11 +355,17 @@ function main() {
       topPredictions: totalTop,
       inPack: totalInPack,
       inPackFraction: totalTop ? totalInPack / totalTop : 0,
+      allDistinctSpecies: totalAllDistinct,
+      allInPack: totalAllInPack,
+      allInPackFraction: totalAllDistinct ? totalAllInPack / totalAllDistinct : 0,
       distinctLocalSpecies: local.length,
       distinctNonLocalSpecies: foreign.length,
     },
     localSpecies: local,
     nonLocalSpecies: foreign,
+    allSpecies: [...allSpeciesTotals.values()].sort(
+      (a, b) => b.clips - a.clips || b.bestConfidence - a.bestConfidence,
+    ),
     perClip,
   };
 
@@ -353,6 +390,21 @@ function main() {
   lines.push(`- Distinct non-local species seen: ${summary.totals.distinctNonLocalSpecies}`);
   lines.push("");
   lines.push(`Pack: ${summary.pack.speciesCount} species within ${summary.pack.place}.`);
+  lines.push("");
+  lines.push("## Every distinct species the model proposed");
+  lines.push("");
+  lines.push(`Scoring every distinct species the model proposed, rather than only the top ${TOP_N}, uses far more of the model's output, so it is the more stable of the two figures. The top-${TOP_N} number is kept because it reflects what a user would actually be shown.`);
+  lines.push("");
+  lines.push(`- Distinct species proposed: ${summary.totals.allDistinctSpecies}`);
+  lines.push(`- Of those, in pack: ${summary.totals.allInPack} (${pct(summary.totals.allInPackFraction)})`);
+  lines.push(`- Not in pack: ${summary.totals.allDistinctSpecies - summary.totals.allInPack}`);
+  lines.push("");
+  lines.push("local | clips | best | species");
+  lines.push(":--- | ---: | ---: | :---");
+  for (const s of summary.allSpecies) {
+    const name = `${s.common || "(no common name)"} (${s.scientific})`;
+    lines.push(`${s.local ? "yes" : "no "} | ${String(s.clips).padStart(5)} | ${s.bestConfidence.toFixed(3)} | ${name}`);
+  }
   lines.push("");
   lines.push("## Species found near Chidambaram");
   lines.push("");
@@ -396,7 +448,8 @@ function main() {
   writeFileSync(SUMMARY_MD, lines.join("\n"), "utf8");
 
   console.log(`Clips: ${summary.totals.clips}  detections: ${summary.totals.detections}`);
-  console.log(`In-pack: ${summary.totals.inPack}/${summary.totals.topPredictions} = ${pct(summary.totals.inPackFraction)}`);
+  console.log(`In-pack (top-${TOP_N}): ${summary.totals.inPack}/${summary.totals.topPredictions} = ${pct(summary.totals.inPackFraction)}`);
+  console.log(`In-pack (all ${summary.totals.allDistinctSpecies} distinct): ${summary.totals.allInPack} = ${pct(summary.totals.allInPackFraction)}`);
   console.log(`Local species seen: ${local.length}   non-local: ${foreign.length}`);
   console.log(`Wrote ${SUMMARY_JSON}`);
   console.log(`Wrote ${SUMMARY_MD}`);

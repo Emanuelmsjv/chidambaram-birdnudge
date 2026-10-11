@@ -15,6 +15,37 @@ Generated 2026-10-11 from 1 clip(s).
 
 Pack: 130 species within Chidambaram, Tamil Nadu, India.
 
+## Every distinct species the model proposed
+
+Scoring every distinct species the model proposed, rather than only the top 5, uses far more of the model's output, so it is the more stable of the two figures. The top-5 number is kept because it reflects what a user would actually be shown.
+
+- Distinct species proposed: 20
+- Of those, in pack: 1 (5.0%)
+- Not in pack: 19
+
+local | clips | best | species
+:--- | ---: | ---: | :---
+no  |     1 | 0.946 | Dark-eyed Junco (Junco hyemalis)
+no  |     1 | 0.904 | House Finch (Haemorhous mexicanus)
+no  |     1 | 0.901 | Black-capped Chickadee (Poecile atricapillus)
+no  |     1 | 0.894 | Blue Jay (Cyanocitta cristata)
+no  |     1 | 0.816 | Northern Cardinal (Cardinalis cardinalis)
+no  |     1 | 0.789 | American Goldfinch (Spinus tristis)
+no  |     1 | 0.418 | Red Crossbill (Loxia curvirostra)
+no  |     1 | 0.276 | White-eyed Vireo (Vireo griseus)
+no  |     1 | 0.269 | Killdeer (Charadrius vociferus)
+no  |     1 | 0.203 | Tufted Titmouse (Baeolophus bicolor)
+no  |     1 | 0.184 | Purple Finch (Haemorhous purpureus)
+no  |     1 | 0.152 | American Robin (Turdus migratorius)
+no  |     1 | 0.148 | Carolina Wren (Thryothorus ludovicianus)
+no  |     1 | 0.143 | Red-eyed Vireo (Vireo olivaceus)
+no  |     1 | 0.125 | Song Sparrow (Melospiza melodia)
+no  |     1 | 0.065 | White-breasted Nuthatch (Sitta carolinensis)
+no  |     1 | 0.061 | Eurasian Blackcap (Sylvia atricapilla)
+no  |     1 | 0.054 | Myrtle Warbler (Setophaga coronata)
+no  |     1 | 0.052 | American Crow (Corvus brachyrhynchos)
+yes |     1 | 0.051 | House Sparrow (Passer domesticus)
+
 ## Species found near Chidambaram
 
 clips | best | species | season now | best time | where to go | listen for
