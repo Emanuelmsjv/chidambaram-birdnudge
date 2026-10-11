@@ -15,12 +15,9 @@
     "nudge": "node scripts/nudge.mjs"
   },
   "dependencies": {
-    "onnxruntime-node": "1.26.0"
+    "onnxruntime-node": "^1.26.0"
   },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "onnxruntime-node": "^1.26.0"
   }
 }
