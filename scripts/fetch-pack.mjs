@@ -74,7 +74,7 @@ async function collectSpecies() {
         inatTaxonId: taxon.id ?? null,
         scientific: name,
         common: taxon.preferred_common_name ?? taxon.common_name ?? null,
-        rank: taxon.rank ?? null,
+        taxonomicRank: taxon.rank ?? null,
         observations: row.count ?? 0,
         photoUrl: taxon.default_photo?.medium_url ?? null,
         key: fullKey(name),
@@ -117,7 +117,7 @@ async function main() {
       totalSeenOnHub: totalResults,
     },
     count: kept.length,
-    species: kept.map((s, i) => ({ rank: i + 1, ...s })),
+    species: kept.map((s, i) => ({ ...s, rank: i + 1 })),
   };
 
   mkdirSync(dirname(OUT_PATH), { recursive: true });

@@ -19,9 +19,9 @@ clips/*.opus
 clips/*.webm
 clips/*.flac
 
-# Regenerable outputs
+# Machine-readable summary is regenerable. docs/overview.md is NOT ignored:
+# it is the project's result and must be published alongside the code.
 data/summary.json
-docs/overview.md
 docs/summary-sample.json
 docs/overview-sample.md
 
