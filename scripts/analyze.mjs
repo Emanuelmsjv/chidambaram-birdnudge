@@ -173,7 +173,21 @@ function topSummary(detections, n = 5) {
 }
 
 async function main() {
-  const targets = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+  // Collect positional paths, skipping flag names AND their values, so that
+// "--min-conf 0.05" is not mistaken for a target path.
+function positionals(argv) {
+  const out = [];
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i].startsWith("--")) {
+      i++; // skip the flag's value too
+      continue;
+    }
+    out.push(argv[i]);
+  }
+  return out;
+}
+
+const targets = positionals(process.argv.slice(2));
   if (targets.length === 0) {
     console.error("usage: node scripts/analyze.mjs <file.wav|dir> [--min-conf 0.05] [--out data/detections]");
     process.exitCode = 1;
