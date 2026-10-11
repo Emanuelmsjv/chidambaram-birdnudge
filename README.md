@@ -177,14 +177,24 @@ BirdNET is a developer preview (V3.0-preview3.1). Treat its outputs accordingly.
 
 There is a worked end-to-end case study in **[docs/case-report.md](docs/case-report.md)**: a
 Yellow-billed Babbler (*Argya affinis*) observed at Golden Jubilee Hostel, Chidambaram, put
-through the full pipeline on real phone recordings, with the misses and the
-unreliable clips kept in rather than edited out.
+through the full pipeline on real phone recordings, with the misses kept in rather than
+edited out.
 
-Two clips recorded at the same place score differently, and one outdoor clip where the
-observer confirmed the bird was present gets no detection at all. The report also
-documents a limitation of the species pack itself: it is built from iNaturalist, which
-under-reports ubiquitous small passerines, so "not in pack" is weaker evidence than it
-looks.
+The model ranked the species first in **three of the four** clips where the observer
+confirmed it was audible — at 0.812, 0.870, and 0.961. The strongest of those is
+`speech-2.wav`, where the bird is audible only as background behind human speech and the
+model still returns 0.961.
+
+That has an obvious objection attached, so the case study includes the control that
+answers it. `speech.wav` is speech with no birds in it, recorded in the same room on the
+same phone minutes earlier; the model returns **nothing** for the species there. Same
+speech, opposite answer, correctly matched to ground truth — the model is responding to
+the bird, not to the voice.
+
+One outdoor clip where the bird was confirmed gets no detection at all, which is reported
+rather than dropped. The report also documents a limitation of the species pack itself: it
+is built from iNaturalist, which under-reports ubiquitous small passerines, so "not in
+pack" is weaker evidence than it looks.
 
 The headline number is that the same model on the same code scores **55.6% in-pack** on
 local audio and **0%** on a foreign soundscape. The species list is doing the work.

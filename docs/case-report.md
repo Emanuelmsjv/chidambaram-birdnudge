@@ -29,24 +29,33 @@ A group of **Yellow-billed Babbler** (*Argya affinis*) was identified by project
 
 - `inside`: **0.812**, rank 1 of 11 distinct species proposed, present in 3 of 6 segments.
 - `inside-2`: **0.870**, rank 1 of 5 distinct species proposed, present in 2 of 3 segments.
+- `speech-2`: **0.961**, rank 1 of 2 distinct species proposed, present in 3 of 4 segments.
 - `outside`: **not detected.** The model still produced bird calls, led by Rose-ringed Parakeet 0.873, Common Myna 0.731, Red-vented Bulbul 0.509.
 
 ## What this does and does not establish
 
-Of the 3 clips where the observer confirmed the species was present, the model ranked it above threshold in 2.
+Of the 4 clips where the observer confirmed the species was present, the model ranked it above threshold in 3.
 
 That is **corroboration, not accuracy**, and the distinction is not cosmetic:
 
 1. **No independent reference exists.** There is no photograph, so nothing outside the observer's own identification can check the species claim.
-2. **The sample is three clips, one bird, one person.** No accuracy figure computed from this would mean anything.
+2. **The sample is 4 clips, one bird, one person.** No accuracy figure computed from this would mean anything.
 3. **The observer's identification is the load-bearing claim.** Everything else is the model agreeing with it.
 
-## The two speech clips
+## The control that makes this result mean something
 
-These were recorded at the same hostel, with speech in the foreground. Whether babblers are audible behind the speech was **not verified**, so they cannot serve as clean negative controls and are excluded from the counts above.
+`speech` and `speech-2` are both speech-dominated recordings from the same room, on the same phone, minutes apart. The difference between them is what was audible behind the speech, and the observer confirmed that difference by ear:
 
-- `speech` returned no Yellow-billed Babbler above 0.05.
-- `speech-2` returned **Yellow-billed Babbler at 0.961**, in 3 of 4 segments.
+| clip | babblers behind the speech? | model's best Yellow-billed Babbler |
+| :--- | :--- | ---: |
+| `speech` | no | **none** |
+| `speech-2` | yes | **0.961** |
+
+The model separates them cleanly. On the clip where babblers were actually audible behind the speech it returns Yellow-billed Babbler at **0.961** across 3 of 4 segments. On the clip where there were none it returns nothing for this species at all.
+
+This is the part of the run worth keeping. A bird buried under human speech is not an easy detection, and the obvious worry — that the model simply fires on human vocalisation and happens to be pointing at a common local babbler — is ruled out by the pair. Same speech, same room, opposite answers, correctly matched to ground truth.
+
+It is still four clips from one observer, so this is not an accuracy figure. But it is the difference between "the model scored well" and "the model distinguished two situations it had no way of being told apart except the audio itself".
 
 ## Foreign-audio control
 
@@ -114,8 +123,7 @@ The source recordings are not committed. `clips/manifest.json` records a SHA-256
 
 ## Honest limits
 
-- Three clips, one species, one observer. This is a worked example, not an evaluation.
-- No photograph means no independent check on the species identification.
-- The two speech clips have unverified background content and are not usable as controls.
+- Four clips with the species present and one verified negative control, all from one observer. This is a worked example, not an evaluation.
+- No photograph means no independent check on the species identification itself; the control only validates the model's behaviour, not the observer's ID.
 - Confidence values are not calibrated probabilities and must not be read as such — the foreign-audio control shows the model being confidently wrong about species that do not occur locally.
 - A confidence above threshold is a prompt to go and look, never a substitute for looking.

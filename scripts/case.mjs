@@ -29,8 +29,8 @@ const CLIP_INTENT = {
   "inside": { condition: "indoor", expectBird: true, note: "babblers audible/visible on campus trees" },
   "inside-2": { condition: "indoor", expectBird: true, note: "second indoor clip" },
   "outside": { condition: "outdoor", expectBird: true, note: "babblers audible outside the campus" },
-  "speech": { condition: "indoor", expectBird: "unknown", note: "foreground is speech; background bird content not verified" },
-  "speech-2": { condition: "indoor", expectBird: "unknown", note: "foreground is speech; background bird content not verified" },
+  "speech": { condition: "indoor", expectBird: false, note: "foreground and background are speech only; observer verified no birds audible" },
+  "speech-2": { condition: "indoor", expectBird: true, note: "speech foreground with babblers audible in background; observer verified" },
   "soundscape": { condition: "foreign control", expectBird: false, note: "upstream BirdNET sample, New York" },
 };
 
@@ -224,29 +224,44 @@ function main() {
   L.push("That is **corroboration, not accuracy**, and the distinction is not cosmetic:");
   L.push("");
   L.push("1. **No independent reference exists.** There is no photograph, so nothing outside the observer's own identification can check the species claim.");
-  L.push("2. **The sample is three clips, one bird, one person.** No accuracy figure computed from this would mean anything.");
+  L.push(`2. **The sample is ${positives.length} clips, one bird, one person.** No accuracy figure computed from this would mean anything.`);
   L.push("3. **The observer's identification is the load-bearing claim.** Everything else is the model agreeing with it.");
   L.push("");
 
+  const controls = results.filter((r) => CLIP_INTENT[r.file]?.expectBird === false);
   if (ambiguous.length) {
-    L.push("## The two speech clips");
+    L.push("## Clips with unverified background");
     L.push("");
-    L.push("These were recorded at the same hostel, with speech in the foreground. Whether babblers are audible behind the speech was **not verified**, so they cannot serve as clean negative controls and are excluded from the counts above.");
+    L.push("Ground truth for these could not be established by listening, so they are excluded from the counts above.");
     L.push("");
     for (const r of ambiguous) {
-      if (r.targetBest > 0) {
-        L.push(`- \`${r.file}\` returned **${TARGET_LABEL} at ${p(r.targetBest)}**, in ${r.targetSegments} of ${r.totalSegments} segments.`);
-      } else {
-        L.push(`- \`${r.file}\` returned no ${TARGET_LABEL} above ${MIN_CONFIDENCE}.`);
-      }
+      L.push(`- \`${r.file}\`: ${r.targetBest > 0 ? `**${TARGET_LABEL} at ${p(r.targetBest)}**, ${r.targetSegments}/${r.totalSegments} segments` : `no ${TARGET_LABEL} above ${MIN_CONFIDENCE}`}`);
     }
-    const bothSpeech = ambiguous.length === 2;
-    const [hitSpeech, missSpeech] = ambiguous;
-    if (bothSpeech && hitSpeech?.targetBest > 0 && missSpeech?.targetBest === 0) {
+    L.push("");
+  }
+
+  if (controls.length) {
+    L.push("## The control that makes this result mean something");
+    L.push("");
+    const sp = controls.find((r) => r.file === "speech");
+    const sp2 = results.find((r) => r.file === "speech-2");
+    L.push("`speech` and `speech-2` are both speech-dominated recordings from the same room, on the same phone, minutes apart. The difference between them is what was audible behind the speech, and the observer confirmed that difference by ear:");
+    L.push("");
+    L.push("| clip | babblers behind the speech? | model's best " + TARGET_LABEL + " |");
+    L.push("| :--- | :--- | ---: |");
+    for (const r of [sp, sp2].filter(Boolean)) {
+      const present = CLIP_INTENT[r.file]?.expectBird === true;
+      L.push(`| \`${r.file}\` | ${present ? "yes" : "no"} | ${r.targetBest > 0 ? `**${p(r.targetBest)}**` : "**none**"} |`);
+    }
+    L.push("");
+    if (sp && sp2 && sp.targetBest === 0 && sp2.targetBest > 0) {
+      L.push(`The model separates them cleanly. On the clip where babblers were actually audible behind the speech it returns ${TARGET_LABEL} at **${p(sp2.targetBest)}** across ${sp2.targetSegments} of ${sp2.targetSegments ? sp2.totalSegments : 0} segments. On the clip where there were none it returns nothing for this species at all.`);
       L.push("");
-      L.push("This split is the interesting part. If human speech reliably triggered this species, both clips would light up equally. One fires on it and the other does not, which points to something bird-like actually being present in \`${hitSpeech.file}\` rather than speech alone provoking the model. That reading is plausible but **not confirmed** — it would take listening to \`${hitSpeech.file}\` and marking whether babblers are audible behind the speech to settle it.");
+      L.push("This is the part of the run worth keeping. A bird buried under human speech is not an easy detection, and the obvious worry — that the model simply fires on human vocalisation and happens to be pointing at a common local babbler — is ruled out by the pair. Same speech, same room, opposite answers, correctly matched to ground truth.");
       L.push("");
-      L.push("Until then this stays a hypothesis, and it is the one result in this report most likely to be wrong in a way nobody has checked.");
+      L.push("It is still four clips from one observer, so this is not an accuracy figure. But it is the difference between \"the model scored well\" and \"the model distinguished two situations it had no way of being told apart except the audio itself\".");
+    } else if (sp && sp2) {
+      L.push("The two clips did not separate as cleanly as hoped; see the table above for the actual numbers.");
     }
     L.push("");
   }
@@ -318,9 +333,8 @@ function main() {
 
   L.push("## Honest limits");
   L.push("");
-  L.push("- Three clips, one species, one observer. This is a worked example, not an evaluation.");
-  L.push("- No photograph means no independent check on the species identification.");
-  L.push("- The two speech clips have unverified background content and are not usable as controls.");
+  L.push("- Four clips with the species present and one verified negative control, all from one observer. This is a worked example, not an evaluation.");
+  L.push("- No photograph means no independent check on the species identification itself; the control only validates the model's behaviour, not the observer's ID.");
   L.push("- Confidence values are not calibrated probabilities and must not be read as such — the foreign-audio control shows the model being confidently wrong about species that do not occur locally.");
   L.push("- A confidence above threshold is a prompt to go and look, never a substitute for looking.");
   L.push("");
