@@ -59,13 +59,15 @@ It is still four clips from one observer, so this is not an accuracy figure. But
 
 ## Foreign-audio control
 
-The upstream BirdNET sample from New York scores **0 of 20** proposals inside the Chidambaram pack. The model was highly confident about species it had no business predicting here:
+The upstream BirdNET sample from New York scores **1 of 20** proposals inside the Chidambaram pack. The model was highly confident about species it had no business predicting here:
 
 - Dark-eyed Junco (*Junco hyemalis*) at 0.946, across 11 segments
 - House Finch (*Haemorhous mexicanus*) at 0.904, across 37 segments
 - Black-capped Chickadee (*Poecile atricapillus*) at 0.901, across 6 segments
 - Blue Jay (*Cyanocitta cristata*) at 0.894, across 14 segments
 - Northern Cardinal (*Cardinalis cardinalis*) at 0.816, across 7 segments
+
+The only species it proposed that also occurs here is House Sparrow (*Passer domesticus*) at 0.051, rank 20 of 20 by confidence. It is the least confident thing in the whole list, barely clearing the 0.05 threshold. Every high-confidence prediction was a bird that does not live within 30 km of Chidambaram.
 
 Local recordings score 23/33 in pack. Same model, same code, same weights — the only variable is which species list the predictions are filtered against.
 

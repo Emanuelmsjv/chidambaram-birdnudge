@@ -109,7 +109,7 @@ function analyse(file, targetBinomial, packMap) {
   for (const r of rows) {
     const key = binomial(r.scientific);
     const prev = best.get(key);
-    if (!prev || r.confidence > prev.confidence) best.set(key, { ...r, hits: 0 });
+    if (!prev || r.confidence > prev.confidence) best.set(key, { ...r, key, hits: 0 });
   }
   for (const r of rows) {
     const key = binomial(r.scientific);
@@ -270,10 +270,17 @@ function main() {
   L.push("");
   const ny = results.find((r) => r.file === "soundscape");
   if (ny) {
-    L.push(`The upstream BirdNET sample from New York scores **0 of ${ny.ranked.length}** proposals inside the Chidambaram pack. The model was highly confident about species it had no business predicting here:`);
+    const nyIn = ny.ranked.filter((s) => s.local);
+    L.push(`The upstream BirdNET sample from New York scores **${nyIn.length} of ${ny.ranked.length}** proposals inside the Chidambaram pack. The model was highly confident about species it had no business predicting here:`);
     L.push("");
     for (const s of ny.ranked.slice(0, 5)) {
       L.push(`- ${s.common} (*${s.scientific}*) at ${p(s.confidence)}, across ${s.hits} segments`);
+    }
+    if (nyIn.length) {
+      const weakest = nyIn.reduce((a, b) => (a.confidence <= b.confidence ? a : b));
+      const rank = [...ny.ranked].sort((a, b) => b.confidence - a.confidence).findIndex((s) => s.key === weakest.key) + 1;
+      L.push("");
+      L.push(`The only species it proposed that also occurs here is ${weakest.localCommon} (*${weakest.scientific}*) at ${p(weakest.confidence)}, rank ${rank} of ${ny.ranked.length} by confidence. It is the least confident thing in the whole list, barely clearing the ${MIN_CONFIDENCE} threshold. Every high-confidence prediction was a bird that does not live within 30 km of Chidambaram.`);
     }
     L.push("");
     const localAll = results.filter((r) => r.file !== "soundscape");
