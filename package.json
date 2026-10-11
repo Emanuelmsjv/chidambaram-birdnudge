@@ -14,7 +14,8 @@
     "summarize": "node scripts/summarize.mjs",
     "case": "node scripts/case.mjs",
     "summarize:samples": "node scripts/summarize.mjs --dir data/samples",
-    "nudge": "node scripts/nudge.mjs"
+    "nudge": "node scripts/nudge.mjs",
+    "test": "node scripts/test.mjs"
   },
   "dependencies": {
     "onnxruntime-node": "^1.26.0"

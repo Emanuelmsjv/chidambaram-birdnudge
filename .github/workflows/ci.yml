@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Smoke tests (no model)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The BirdNET model (68 MB) and the WAV clips are intentionally not in
+      # git, so this job exercises only the data-processing and rendering code
+      # against the committed sample CSVs. It pins the headline numbers
+      # (in-pack fractions, species counts, foreign-control species) so they
+      # cannot silently drift, and checks that nudge refuses to recommend a
+      # non-local bird. The test regenerates its own summary outputs, so a clean
+      # checkout with no docs/summary-sample.json still passes.
+      - name: Run smoke tests
+        run: npm test
+
+  analyze:
+    name: Inference smoke test (downloads model)
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Proves the ONNX runtime path actually loads BirdNET and produces output
+      # on a clean Linux runner. Downloads the ~68 MB model, generates a short
+      # synthetic tone, and asserts the analyzer emits a detections CSV without
+      # throwing. It does not assert a specific species: a synthetic tone has no
+      # real bird in it, and the point here is that inference runs and is
+      # reproducible, not that the model "detects" noise.
+      - name: Download BirdNET model
+        run: npm run model
+
+      - name: Generate a test WAV
+        run: |
+          node -e '
+            const fs = require("fs");
+            const rate = 32000, seconds = 3;
+            const n = rate * seconds;
+            const buf = Buffer.alloc(44 + n * 2);
+            buf.write("RIFF", 0); buf.writeUInt32LE(36 + n * 2, 4); buf.write("WAVE", 8);
+            buf.write("fmt ", 12); buf.writeUInt32LE(16, 16); buf.writeUInt16LE(1, 20);
+            buf.writeUInt16LE(1, 22); buf.writeUInt32LE(rate, 24); buf.writeUInt32LE(rate * 2, 28);
+            buf.writeUInt16LE(2, 32); buf.writeUInt16LE(16, 34);
+            buf.write("data", 36); buf.writeUInt32LE(n * 2, 40);
+            for (let i = 0; i < n; i++) {
+              const t = i / rate;
+              const v = Math.sin(2 * Math.PI * 440 * t) * 0.2 + (Math.random() * 2 - 1) * 0.01;
+              buf.writeInt16LE(Math.max(-32768, Math.min(32767, v * 32767)), 44 + i * 2);
+            }
+            fs.writeFileSync("test-tone.wav", buf);
+          '
+
+      - name: Run inference on the test WAV
+        run: node scripts/analyze.mjs test-tone.wav --out ci-detections --min-conf 0.05
+
+      - name: Assert a detections CSV was written
+        run: |
+          if [ ! -f ci-detections/test-tone.csv ]; then
+            echo "::error::analyze.mjs did not write ci-detections/test-tone.csv"
+            ls -la ci-detections || true
+            exit 1
+          fi
+          echo "detections file written:"
+          cat ci-detections/test-tone.csv

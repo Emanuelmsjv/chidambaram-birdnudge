@@ -80,6 +80,23 @@ npm run analyze clips --out data/detections
 npm run case             # regenerate docs/case-report.md
 ```
 
+## Tests
+
+```bash
+npm test
+```
+
+No framework, no model download, a few seconds. The smoke tests run against the
+committed sample CSVs and pin the numbers the write-ups quote — pack size, the
+Yellow-billed Babbler's rank and observation count, both in-pack fractions, and
+the foreign-control species. They also assert `nudge` refuses to recommend a bird
+that does not live locally, which is the behaviour the whole project exists for.
+
+Two things this catches that nothing else would: a species silently dropping out
+of the pack, and the in-pack fractions drifting away from the published figures.
+CI runs these on every push, then a second job downloads the 68 MB model and
+proves the ONNX inference path runs end to end.
+
 ## How it works
 
 The BirdNET+ ONNX graph takes **raw audio directly** — the spectrogram, mel
